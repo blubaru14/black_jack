@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 // GameController is a the controller for the game. It has all the
@@ -16,8 +17,7 @@ public class GameController : MonoBehaviour
     public Slider BetSlider;
     public Button HitButton;
     public Button StandButton;
-    public Button PlayButton;
-    public Button RestartButton;
+    public Button DealButton;
     public Text PlayerCashText;
     public Text PlayerScoreText;
     public Text DealerScoreText;
@@ -28,11 +28,26 @@ public class GameController : MonoBehaviour
     // before any of the Update methods are called the first time.
     private void Start()
     {
-        // call the Restart function. Doing it this way as Start
-        // and Restart would have the same exact code. Restart
-        // is needed as we may need to restart the game after
-        // start.
-        Restart();
+        // disable these buttons since no round is going on
+        HitButton.interactable = false;
+        StandButton.interactable = false;
+        // enable these since they are needed to start a round
+        DealButton.interactable = true;
+        BetSlider.interactable = true;
+
+        // blank the results text
+        ResultsText.text = "";
+
+        // get the player cash from the player prefs set in game menu scene
+        _PlayerCash = PlayerPrefs.GetInt("playerCash");
+        // update the max bet value to the players current cash
+        BetSlider.maxValue = _PlayerCash;
+        BetSlider.value = 0;
+
+        // clear the card stacks
+        Deck.Clear();
+        Dealer.Clear();
+        Player.Clear();
     }
 
     // Update is called once per frame and used to update objects.
@@ -116,27 +131,25 @@ public class GameController : MonoBehaviour
         {
             // enable these since they are needed to start a round
             BetSlider.interactable = true;
-            PlayButton.interactable = true;
+            DealButton.interactable = true;
         }
-
-        RestartButton.interactable = true;
+        
         // update the max bet value to the players current cash
         BetSlider.maxValue = _PlayerCash;
         BetSlider.value = 0;
     }
 
-    // Play is used by the play button. Before the function is called the
+    // Deal is used by the deal button. Before the function is called the
     // player will set their bet. The player and dealer will get their
     // initial 2 cards.
-    public void Play()
+    public void Deal()
     {
         // enable these buttons since it is the players turn
         HitButton.interactable = true;
         StandButton.interactable = true;
         // disable these since we do not want them used mid round
         BetSlider.interactable = false;
-        PlayButton.interactable = false;
-        RestartButton.interactable = false;
+        DealButton.interactable = false;
 
         // new round so blank the results text
         ResultsText.text = "";
@@ -206,29 +219,10 @@ public class GameController : MonoBehaviour
         StartCoroutine(DealersTurn());
     }
 
-    // Restart is used by the restart button and also called on start up.
-    // It resets the game to an initial state.
-    public void Restart()
+    // Restart is used by the exit button. It loads the game menu scene.
+    public void Exit()
     {
-        // disable these buttons since no round is going on
-        HitButton.interactable = false;
-        StandButton.interactable = false;
-        // enable these since they are needed to start a round
-        PlayButton.interactable = true;
-        BetSlider.interactable = true;
-
-        // new round so blank the results text
-        ResultsText.text = "";
-
-        _PlayerCash = 1000;
-        // update the max bet value to the players current cash
-        BetSlider.maxValue = _PlayerCash;
-        BetSlider.value = 0;
-
-        // clear the card stacks
-        Deck.Clear();
-        Dealer.Clear();
-        Player.Clear();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
     // SetBet is used by the bet slider. The bet slider has a 

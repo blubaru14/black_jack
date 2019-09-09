@@ -408,8 +408,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 43.700012, y: 20.099947}
-  m_SizeDelta: {x: 66.31, y: 16.13}
+  m_AnchoredPosition: {x: 34.22, y: 20.099947}
+  m_SizeDelta: {x: 89.35, y: 16.13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &304422147
 MonoBehaviour:
@@ -770,7 +770,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -17.2, y: 20.1}
+  m_AnchoredPosition: {x: -38.200012, y: 20.1}
   m_SizeDelta: {x: 38.98, y: 16.13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &516728049
@@ -897,8 +897,7 @@ MonoBehaviour:
   BetSlider: {fileID: 879679637}
   HitButton: {fileID: 486276926}
   StandButton: {fileID: 2062611291}
-  PlayButton: {fileID: 993185038}
-  RestartButton: {fileID: 1354831951}
+  DealButton: {fileID: 1354831951}
   PlayerCashText: {fileID: 304422147}
   PlayerScoreText: {fileID: 121049301}
   DealerScoreText: {fileID: 1113906703}
@@ -1160,7 +1159,7 @@ GameObject:
   - component: {fileID: 993185039}
   - component: {fileID: 993185038}
   m_Layer: 5
-  m_Name: PlayButton
+  m_Name: ExitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1225,7 +1224,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 761074897}
-        m_MethodName: Play
+        m_MethodName: Exit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1536,8 +1535,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 43.7, y: 4.4}
-  m_SizeDelta: {x: 66.31, y: 16.13}
+  m_AnchoredPosition: {x: 34.22, y: 4.4}
+  m_SizeDelta: {x: 89.35, y: 16.13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1297391264
 GameObject:
@@ -1733,7 +1732,7 @@ GameObject:
   - component: {fileID: 1354831952}
   - component: {fileID: 1354831951}
   m_Layer: 5
-  m_Name: RestartButton
+  m_Name: DealButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1798,7 +1797,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 761074897}
-        m_MethodName: Restart
+        m_MethodName: Deal
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2098,7 +2097,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5.449983, y: 4.400055}
+  m_AnchoredPosition: {x: -26.449995, y: 4.400055}
   m_SizeDelta: {x: 38.98, y: 16.13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1568299012
@@ -2389,7 +2388,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Restart
+  m_Text: Deal
 --- !u!222 &1920739019
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2659,7 +2658,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Play
+  m_Text: Exit
 --- !u!222 &2119379476
 CanvasRenderer:
   m_ObjectHideFlags: 0
