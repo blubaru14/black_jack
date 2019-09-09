@@ -19,6 +19,43 @@ public class CardStack : MonoBehaviour
         _Cards = new List<GameObject>();
     }
 
+    // Shuffle will create a list of ints that is shuffled based on
+    // Fisher–Yates algorithm.
+    private static List<int> Shuffle(int count)
+    {
+        // create a list of ints starting at 0 and iterating count amount 
+        // of times
+        List<int> shuffledPositions = Enumerable.Range(0, count).ToList();
+
+        // execute Fisher–Yates algorithm
+        for (int position = shuffledPositions.Count - 1; position > 0; position--)
+        {
+            int randPosition = _Rand.Next(position + 1);
+            var temp = shuffledPositions[position];
+            shuffledPositions[position] = shuffledPositions[randPosition];
+            shuffledPositions[randPosition] = temp;
+        }
+
+        return shuffledPositions;
+    }
+
+    // GetCardCount will return the card count. This is needed since
+    // Cards is a private object (we don't want anyone messing with
+    // that).
+    public int GetCardCount()
+    {
+        // check the cards list is not null
+        if (_Cards != null)
+        {
+            return _Cards.Count;
+        }
+        // empty cards list or bad index
+        else
+        {
+            return 0;
+        }
+    }
+
     // GetCard will get a card and return it. This is needed since
     // Cards is a private object (we don't want anyone messing with
     // that).
@@ -155,25 +192,5 @@ public class CardStack : MonoBehaviour
 
             _Cards.Add(cardGO);
         }
-    }
-
-    // Shuffle will create a list of ints that is shuffled based on
-    // Fisher–Yates algorithm.
-    public static List<int> Shuffle(int count)
-    {
-        // create a list of ints starting at 0 and iterating count amount 
-        // of times
-        List<int> shuffledPositions = Enumerable.Range(0, count).ToList();
-
-        // execute Fisher–Yates algorithm
-        for (int position = shuffledPositions.Count - 1; position > 0; position--)
-        {
-            int randPosition = _Rand.Next(position + 1);
-            var temp = shuffledPositions[position];
-            shuffledPositions[position] = shuffledPositions[randPosition];
-            shuffledPositions[randPosition] = temp;
-        }
-
-        return shuffledPositions;
     }
 }
