@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ public class GameController : MonoBehaviour
 {
     private bool _HideDealerScore = false;
     private int _PlayerCash;
+    private int _BetRatio;
 
     // game objects
     public CardStack Deck;
@@ -18,12 +20,12 @@ public class GameController : MonoBehaviour
     public Button HitButton;
     public Button StandButton;
     public Button DealButton;
-    public Text PlayerCashText;
-    public Text PlayerScoreText;
-    public Text DealerScoreText;
-    public Text ResultsText;
-    public Text BetText;
-
+    public TMP_Text PlayerCashValueText;
+    public TMP_Text BetValueText;
+    public TMP_Text PlayerValueText;
+    public TMP_Text DealerValueText;
+    public TMP_Text ResultsText;
+    
     // Start is called on the frame when a script is enabled just 
     // before any of the Update methods are called the first time.
     private void Start()
@@ -38,8 +40,10 @@ public class GameController : MonoBehaviour
         // blank the results text
         ResultsText.text = "";
 
-        // get the player cash from the player prefs set in game menu scene
-        _PlayerCash = PlayerPrefs.GetInt("playerCash");
+        // get the player cash and bet ratio from the player prefs 
+        // set in game menu scene
+        _PlayerCash = PlayerPrefs.GetInt("PLAYER_CASH");
+        _BetRatio = PlayerPrefs.GetInt("BET_RATIO");
         // update the max bet value to the players current cash
         BetSlider.maxValue = _PlayerCash;
         BetSlider.value = 0;
@@ -54,22 +58,22 @@ public class GameController : MonoBehaviour
     private void Update()
     {
         // update the players cash value
-        PlayerCashText.text = "$" + _PlayerCash.ToString();
+        PlayerCashValueText.text = "$" + _PlayerCash.ToString();
         // update the players score aka current card stack value
-        PlayerScoreText.text = Player.Value().ToString();
+        PlayerValueText.text = Player.Value().ToString();
 
         // if it is the players turn
         if (_HideDealerScore)
         {
             // update the dealers score aka current card stack value
             // hide the rank of the dealers 2nd card (aka index 1)
-            DealerScoreText.text = (Dealer.Value() - Dealer.GetCard(1).GetComponent<Card>().Rank()).ToString() + " + ?";
+            DealerValueText.text = (Dealer.Value() - Dealer.GetCard(1).GetComponent<Card>().Rank()).ToString() + " + ?";
         }
         // it is the dealers turn
         else
         {
             // update the dealers score aka current card stack value
-            DealerScoreText.text = Dealer.Value().ToString();
+            DealerValueText.text = Dealer.Value().ToString();
         }
     }
 
@@ -107,8 +111,8 @@ public class GameController : MonoBehaviour
         //      OR player has higher value than dealer)
         else if (Player.Value() <= 21 && (Dealer.Value() > 21 || Player.Value() > Dealer.Value()))
         {
-            // give the player back their bet + 1.5x their bet
-            _PlayerCash += Mathf.RoundToInt(2.5f * BetSlider.value);
+            // give the player back their bet * bet ratio
+            _PlayerCash += Mathf.RoundToInt(BetSlider.value * _BetRatio);
             ResultsText.text = "Player Wins";
         }
         // player has 21 or less
@@ -231,6 +235,6 @@ public class GameController : MonoBehaviour
     // value is.
     public void SetBetText(float value)
     {
-        BetText.text = "$" + Mathf.RoundToInt(value).ToString();
+        BetValueText.text = "$" + Mathf.RoundToInt(value).ToString();
     }
 }

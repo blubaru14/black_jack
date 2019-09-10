@@ -93,7 +93,8 @@ public class CardStack : MonoBehaviour
 
         SpriteRenderer cardSR = cardGO.GetComponent<SpriteRenderer>();
         // set the sorting order so cards aren't displayed out of order
-        cardSR.sortingOrder = _Cards.Count;
+        // + 1 to put it on top of the background
+        cardSR.sortingOrder = _Cards.Count + 1;
 
         _Cards.Add(cardGO);
     }
@@ -182,7 +183,8 @@ public class CardStack : MonoBehaviour
 
             Card card = cardGO.GetComponent<Card>();
             // set the face to the shuffled index
-            card.FaceIndex = shuffledPositions[cardIndex];
+            // + 1 to put it on top of the background
+            card.FaceIndex = shuffledPositions[cardIndex] + 1;
             // set the card face down since it is the deck
             card.ToggleFace(false);
 
