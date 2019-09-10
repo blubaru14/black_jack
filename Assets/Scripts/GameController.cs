@@ -257,10 +257,11 @@ public class GameController : MonoBehaviour
     // Restart is used by the exit button. It loads the game menu scene.
     public void Exit()
     {
+        // load the game menu scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
-    // SetBet is used by the bet slider. The bet slider has a 
+    // SetBet is used by the bet slider. The bet slider has an 
     // onchange listener that will trigger this function. All the
     // function does is set the bet text to whatever the bet slider
     // value is.
