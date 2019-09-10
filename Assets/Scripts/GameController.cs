@@ -19,13 +19,15 @@ public class GameController : MonoBehaviour
     public Slider BetSlider;
     public Button HitButton;
     public Button StandButton;
+    public Button DoubleDownButton;
     public Button DealButton;
     public TMP_Text PlayerCashValueText;
     public TMP_Text BetValueText;
     public TMP_Text PlayerValueText;
     public TMP_Text DealerValueText;
     public TMP_Text ResultsText;
-    
+    public TMP_Text CashDeltaValueText;
+
     // Start is called on the frame when a script is enabled just 
     // before any of the Update methods are called the first time.
     private void Start()
@@ -33,12 +35,14 @@ public class GameController : MonoBehaviour
         // disable these buttons since no round is going on
         HitButton.interactable = false;
         StandButton.interactable = false;
+        DoubleDownButton.interactable = false;
         // enable these since they are needed to start a round
         DealButton.interactable = true;
         BetSlider.interactable = true;
 
-        // blank the results text
+        // blank the results and cash delta text
         ResultsText.text = "";
+        CashDeltaValueText.text = "";
 
         // get the player cash and bet ratio from the player prefs 
         // set in game menu scene
@@ -86,6 +90,7 @@ public class GameController : MonoBehaviour
         // disable these buttons since it is not longer the players turn
         HitButton.interactable = false;
         StandButton.interactable = false;
+        DoubleDownButton.interactable = false;
 
         // since it is the dealers turn then don't hide their score or cards
         _HideDealerScore = false;
@@ -105,6 +110,7 @@ public class GameController : MonoBehaviour
         if (Dealer.Value() <= 21 && (Player.Value() > 21 || Dealer.Value() > Player.Value()))
         {
             ResultsText.text = "Dealer Wins";
+            CashDeltaValueText.text = "-$" + Mathf.RoundToInt(BetSlider.value).ToString();
         }
         // player has 21 or less 
         // AND (dealer has 21 or more 
@@ -114,6 +120,7 @@ public class GameController : MonoBehaviour
             // give the player back their bet * bet ratio
             _PlayerCash += Mathf.RoundToInt(BetSlider.value * _BetRatio);
             ResultsText.text = "Player Wins";
+            CashDeltaValueText.text = "+$" + Mathf.RoundToInt(BetSlider.value).ToString();
         }
         // player has 21 or less
         // AND dealer has 21 or less 
@@ -123,11 +130,13 @@ public class GameController : MonoBehaviour
             // give the player back their bet
             _PlayerCash += Mathf.RoundToInt(BetSlider.value);
             ResultsText.text = "Draw";
+            CashDeltaValueText.text = "+$0";
         }
         // player and dealer have over 21
         else
         {
             ResultsText.text = "House Wins";
+            CashDeltaValueText.text = "-$" + Mathf.RoundToInt(BetSlider.value).ToString();
         }
 
         // force the player to restart if they have zero cash
@@ -155,8 +164,9 @@ public class GameController : MonoBehaviour
         BetSlider.interactable = false;
         DealButton.interactable = false;
 
-        // new round so blank the results text
+        // new round so blank the results and cash delta text
         ResultsText.text = "";
+        CashDeltaValueText.text = "";
 
         // hide the dealers score since it is the players turn
         _HideDealerScore = true;
@@ -198,8 +208,13 @@ public class GameController : MonoBehaviour
             }
         }
 
-        // players hand is 21 so jump to dealers turn
-        if (Player.Value() == 21)
+        // players hand is 9, 10 or 11 so give option to double down
+        // AND the player has enough cash to do their bet again
+        if ((Player.Value() == 9 || Player.Value() == 10 || Player.Value() == 11) && _PlayerCash >= Mathf.RoundToInt(BetSlider.value))
+        {
+            DoubleDownButton.interactable = true;
+        }
+        else if (Player.Value() == 21)
         {
             StartCoroutine(DealersTurn());
         }
@@ -220,6 +235,22 @@ public class GameController : MonoBehaviour
     // Restart is used by the stand button. It kicks off the dealers turn.
     public void Stand()
     {
+        StartCoroutine(DealersTurn());
+    }
+
+    // DoubleDown is used by the double down button. It doubles the players bet,
+    // give them one card then kicks off the dealers turn.
+    public void DoubleDown()
+    {
+        // subtract the players bet again from their cash
+        _PlayerCash -= Mathf.RoundToInt(BetSlider.value);
+        // double the bet
+        BetSlider.value = BetSlider.value * 2;
+
+        // give the player a card face up
+        Player.AddCard(Deck.RemoveCard(), true);
+
+        // dealers turn
         StartCoroutine(DealersTurn());
     }
 
