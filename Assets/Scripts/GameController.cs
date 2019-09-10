@@ -120,7 +120,7 @@ public class GameController : MonoBehaviour
             // give the player back their bet * bet ratio
             _PlayerCash += Mathf.RoundToInt(BetSlider.value * _BetRatio);
             ResultsText.text = "Player Wins";
-            CashDeltaValueText.text = "+$" + Mathf.RoundToInt(BetSlider.value).ToString();
+            CashDeltaValueText.text = "+$" + Mathf.RoundToInt((BetSlider.value * _BetRatio)).ToString();
         }
         // player has 21 or less
         // AND dealer has 21 or less 
